@@ -56,7 +56,7 @@ describe("Quizzer Tests", () => {
             screen.queryByText("What is 2+2?", { exact: false })
         ).toBeInTheDocument();
         for (let i = 0; i < QUIZZES[1].questionList.length; i++) {
-            if (QUIZZES[1].questionList[i].published == true) {
+            if (QUIZZES[1].questionList[i].published === true) {
                 expect(
                     screen.queryByText(QUIZZES[1].questionList[i].body, {
                         exact: false
@@ -170,6 +170,20 @@ describe("Quizzer Tests", () => {
     });
 
     test("Users can delete an existing quiz question", () => {
+        const text = screen.getByText("Simple_Questions");
+        text.click();
+        const editButton = screen.getByText("Edit");
+        editButton.click();
+
+        const deleteQButton = screen.getAllByText("Delete", { exact: true })[0];
+        deleteQButton.click();
+
+        const saveButton = screen.getByText("Save");
+        saveButton.click();
+
+        expect(
+            screen.queryByText("What is 2+2", { exact: false })
+        ).not.toBeInTheDocument();
     });
 
     test("Users can add a new quiz question", () => {
@@ -199,6 +213,25 @@ describe("Quizzer Tests", () => {
     });
 
     test("Users can edit the questions and fields of a quiz", () => {
+        // Work on this test case
+        const text = screen.getByText("Simple_Questions");
+        text.click();
+
+        const initialBody = screen.getAllByTestId("question_body");
+        expect(initialBody[0]).toHaveTextContent("What is 2+2?");
+
+        const editButton = screen.getByText("Edit");
+        editButton.click();
+
+        const selectOption = screen.getAllByTestId("edit_question_title")[0];
+
+        userEvent.type(selectOption, "What is 3+3?");
+
+        const saveButton = screen.getByText("Save");
+        saveButton.click();
+
+        const finalBody = screen.getAllByTestId("question_body");
+        expect(finalBody[0]).toHaveValue("What is 3+3?"); 
     });
 
     test("Users can reorder quiz questions", () => {
@@ -225,7 +258,7 @@ describe("Quizzer Tests", () => {
         expect(afterOrder[1]).toHaveTextContent("What is 2+2?");
     });
 
-    test("Quiz questions can be of AT LEAST two types: a short answer question or multiple choice question ", () => {
+    test("Quiz questions can be of AT LEAST two types: a short answer question or multiple choice question", () => {
         const text = screen.getByText("Simple_Questions");
         text.click();
 

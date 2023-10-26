@@ -3,6 +3,7 @@ import { Quiz } from "../interfaces/quiz";
 import { Question, QuestionType } from "../interfaces/question";
 import { QuizList } from "./QuizList";
 import { AddQuizModal } from "./AddQuizModal";
+// import image from "./sketchFINAL.jpg";
 
 import "./Quizzer.css";
 import sample from "../data/quizzes.json";
@@ -31,7 +32,15 @@ export const Quizzer = () => {
     }
 
     function addQuiz(title: string, body: string) {
+        const newQuiz: Quiz = {
+            id: quizzes.length + 1,
+            title,
+            body,
+            published: false,
+            questionList: []
+        };
         setQuizzes([...quizzes, newQuiz]);
+        setShowAddModal(false);
     }
 
     function deleteQuiz(qId: number) {
@@ -56,7 +65,7 @@ export const Quizzer = () => {
             ></AddQuizModal>
             <hr />
             <h2 style={{ color: "white" }}>Application Sketch</h2>
-            {/* <img src={require("./sketchFINAL.jpg")} /> */}
+            {/* <img src={image} /> */}
             <hr />
             <div style={{ color: "white" }}>
                 <h2>Completed Features</h2>
